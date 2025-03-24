@@ -1,21 +1,27 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Send } from "lucide-react"
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Send } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 
 type Message = {
-  id: string
-  content: string
-  sender: "user" | "therapist"
-  timestamp: Date
-}
+  id: string;
+  content: string;
+  sender: "user" | "therapist";
+  timestamp: Date;
+};
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([
@@ -25,22 +31,22 @@ export default function ChatPage() {
       sender: "therapist",
       timestamp: new Date(Date.now() - 1000 * 60 * 5),
     },
-  ])
-  const [input, setInput] = useState("")
-  const [isTyping, setIsTyping] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const { toast } = useToast()
+  ]);
+  const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    scrollToBottom();
+  }, [messages]);
 
   const handleSend = () => {
-    if (!input.trim()) return
+    if (!input.trim()) return;
 
     // Add user message
     const userMessage: Message = {
@@ -48,48 +54,46 @@ export default function ChatPage() {
       content: input,
       sender: "user",
       timestamp: new Date(),
-    }
+    };
 
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
 
     // Simulate therapist typing
-    setIsTyping(true)
+    setIsTyping(true);
 
     // Simulate therapist response after delay
-    setTimeout(
-      () => {
-        setIsTyping(false)
+    setTimeout(() => {
+      setIsTyping(false);
 
-        const responses = [
-          "I understand how you feel. Can you tell me more about that?",
-          "That's interesting. How long have you been experiencing this?",
-          "Thank you for sharing. What do you think triggered these feelings?",
-          "I'm here to support you. Have you tried any coping strategies?",
-          "Let's explore that further. How does this affect your daily life?",
-        ]
+      const responses = [
+        "I understand how you feel. Can you tell me more about that?",
+        "That's interesting. How long have you been experiencing this?",
+        "Thank you for sharing. What do you think triggered these feelings?",
+        "I'm here to support you. Have you tried any coping strategies?",
+        "Let's explore that further. How does this affect your daily life?",
+      ];
 
-        const therapistMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          content: responses[Math.floor(Math.random() * responses.length)],
-          sender: "therapist",
-          timestamp: new Date(),
-        }
+      const therapistMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: responses[Math.floor(Math.random() * responses.length)],
+        sender: "therapist",
+        timestamp: new Date(),
+      };
 
-        setMessages((prev) => [...prev, therapistMessage])
+      setMessages((prev) => [...prev, therapistMessage]);
 
-        toast({
-          description: "Your conversation is encrypted and secured with blockchain technology",
-          className: "bg-secondary text-secondary-foreground",
-        })
-      },
-      2000 + Math.random() * 1000,
-    )
-  }
+      toast({
+        description:
+          "Your conversation is encrypted and secured with blockchain technology",
+        className: "bg-secondary text-secondary-foreground",
+      });
+    }, 2000 + Math.random() * 1000);
+  };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  }
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
 
   return (
     <div className="container max-w-4xl py-8">
@@ -97,7 +101,7 @@ export default function ChatPage() {
         <CardHeader className="pb-4">
           <CardTitle>Anonymous Therapy Chat</CardTitle>
           <CardDescription>
-            Your conversation is end-to-end encrypted and secured with blockchain technology
+            Start a end-to-end encrypted chat with our authorised therapist
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
@@ -110,17 +114,24 @@ export default function ChatPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-                  >
+                    className={`flex ${
+                      message.sender === "user"
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}>
                     <div
                       className={`flex gap-2 max-w-[80%] ${
-                        message.sender === "user" ? "flex-row-reverse" : "flex-row"
-                      }`}
-                    >
+                        message.sender === "user"
+                          ? "flex-row-reverse"
+                          : "flex-row"
+                      }`}>
                       <Avatar className="h-8 w-8">
                         {message.sender === "therapist" ? (
                           <>
-                            <AvatarImage src="/placeholder.svg" alt="Dr. Thompson" />
+                            <AvatarImage
+                              src="/placeholder.svg"
+                              alt="Dr. Thompson"
+                            />
                             <AvatarFallback>DT</AvatarFallback>
                           </>
                         ) : (
@@ -133,12 +144,15 @@ export default function ChatPage() {
                       <div>
                         <div
                           className={`rounded-lg px-4 py-2 ${
-                            message.sender === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
-                          }`}
-                        >
+                            message.sender === "user"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted"
+                          }`}>
                           {message.content}
                         </div>
-                        <div className="text-xs text-muted-foreground mt-1">{formatTime(message.timestamp)}</div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {formatTime(message.timestamp)}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -148,11 +162,13 @@ export default function ChatPage() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex justify-start"
-                  >
+                    className="flex justify-start">
                     <div className="flex gap-2 max-w-[80%]">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src="/placeholder.svg" alt="Dr. Thompson" />
+                        <AvatarImage
+                          src="/placeholder.svg"
+                          alt="Dr. Thompson"
+                        />
                         <AvatarFallback>DT</AvatarFallback>
                       </Avatar>
                       <div className="rounded-lg px-4 py-2 bg-muted">
@@ -170,14 +186,13 @@ export default function ChatPage() {
               </AnimatePresence>
             </div>
 
-            <div className="p-4 border-t">
+            <div className="p-2 border-t">
               <form
                 onSubmit={(e) => {
-                  e.preventDefault()
-                  handleSend()
+                  e.preventDefault();
+                  handleSend();
                 }}
-                className="flex gap-2"
-              >
+                className="flex gap-2">
                 <Input
                   placeholder="Type your message..."
                   value={input}
@@ -193,6 +208,5 @@ export default function ChatPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-

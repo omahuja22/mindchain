@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ResponsiveContainer,
@@ -9,10 +9,27 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-} from "@/components/ui/chart"
-import { Card } from "@/components/ui/card"
+} from "@/components/ui/chart";
+import { Card } from "@/components/ui/card";
 
-const data = [
+interface DataPoint {
+  date: string;
+  mood: number;
+  anxiety: number;
+  sleep: number;
+}
+
+interface TooltipContentProps {
+  active?: boolean;
+  payload?: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
+  label?: string;
+}
+
+const data: DataPoint[] = [
   { date: "Day 1", mood: 3, anxiety: 7, sleep: 4 },
   { date: "Day 2", mood: 4, anxiety: 6, sleep: 5 },
   { date: "Day 3", mood: 3, anxiety: 7, sleep: 3 },
@@ -27,7 +44,7 @@ const data = [
   { date: "Day 12", mood: 8, anxiety: 2, sleep: 8 },
   { date: "Day 13", mood: 7, anxiety: 3, sleep: 7 },
   { date: "Day 14", mood: 8, anxiety: 2, sleep: 8 },
-]
+];
 
 export function MoodChart() {
   return (
@@ -39,10 +56,13 @@ export function MoodChart() {
           right: 30,
           left: 0,
           bottom: 0,
-        }}
-      >
+        }}>
         <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-        <XAxis dataKey="date" tick={{ fontSize: 12 }} tickMargin={10} />
+        <XAxis
+          dataKey="date"
+          tick={{ fontSize: 12 }}
+          label={{ value: "Date", position: "bottom" }}
+        />
         <YAxis
           domain={[0, 10]}
           tick={{ fontSize: 12 }}
@@ -55,7 +75,7 @@ export function MoodChart() {
           }}
         />
         <Tooltip
-          content={({ active, payload, label }) => {
+          content={({ active, payload, label }: TooltipContentProps) => {
             if (active && payload && payload.length) {
               return (
                 <Card className="p-2 border shadow-sm bg-background">
@@ -66,9 +86,9 @@ export function MoodChart() {
                     </p>
                   ))}
                 </Card>
-              )
+              );
             }
-            return null
+            return null;
           }}
         />
         <Legend />
@@ -81,10 +101,25 @@ export function MoodChart() {
           dot={{ r: 4 }}
           activeDot={{ r: 6 }}
         />
-        <Line type="monotone" dataKey="anxiety" name="Anxiety" stroke="#ef4444" strokeWidth={2} dot={{ r: 4 }} />
-        <Line type="monotone" dataKey="sleep" name="Sleep Quality" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} />
+        <Line
+          type="monotone"
+          dataKey="anxiety"
+          name="Anxiety"
+          stroke="#ef4444"
+          strokeWidth={2}
+          dot={{ r: 4 }}
+          activeDot={{ r: 6 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="sleep"
+          name="Sleep Quality"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          dot={{ r: 4 }}
+          activeDot={{ r: 6 }}
+        />
       </LineChart>
     </ResponsiveContainer>
-  )
+  );
 }
-
