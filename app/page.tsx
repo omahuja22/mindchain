@@ -1,28 +1,27 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { ArrowRight, Brain, Shield, Users } from "lucide-react"
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight, Brain, Shield, Users } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center px-4 py-24 text-center bg-gradient-to-b from-background to-secondary/20">
+      <section className="flex flex-col items-center justify-center px-4 py-36 text-center bg-gradient-to-b from-background to-secondary/20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto"
-        >
+          className="max-w-3xl mx-auto">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
             Decentralized Mental Health Support
           </h1>
           <p className="mt-6 text-xl text-muted-foreground">
-            MindChain leverages blockchain technology to provide secure, anonymous, and accessible mental health support
-            for everyone.
+            MindChain leverages blockchain technology to provide secure,
+            anonymous, and accessible mental health support for everyone.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mt-10">
             <Button asChild size="lg">
@@ -47,14 +46,14 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center text-center p-6 rounded-lg border bg-card"
-            >
+              className="flex flex-col items-center text-center p-6 rounded-lg border bg-card">
               <div className="p-3 rounded-full bg-primary/10 mb-4">
                 <Brain className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-xl font-medium mb-2">Anonymous Therapy</h3>
               <p className="text-muted-foreground">
-                Connect with licensed therapists anonymously through our secure chat platform.
+                Connect with licensed therapists anonymously through our secure
+                chat platform.
               </p>
             </motion.div>
 
@@ -63,14 +62,14 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center text-center p-6 rounded-lg border bg-card"
-            >
+              className="flex flex-col items-center text-center p-6 rounded-lg border bg-card">
               <div className="p-3 rounded-full bg-primary/10 mb-4">
                 <Shield className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-xl font-medium mb-2">Blockchain Security</h3>
               <p className="text-muted-foreground">
-                Your therapy records are securely stored on the blockchain, giving you full control over your data.
+                Your therapy records are securely stored on the blockchain,
+                giving you full control over your data.
               </p>
             </motion.div>
 
@@ -79,14 +78,14 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center text-center p-6 rounded-lg border bg-card"
-            >
+              className="flex flex-col items-center text-center p-6 rounded-lg border bg-card">
               <div className="p-3 rounded-full bg-primary/10 mb-4">
                 <Users className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-xl font-medium mb-2">Community Support</h3>
               <p className="text-muted-foreground">
-                Join peer support groups and connect with others on similar mental health journeys.
+                Join peer support groups and connect with others on similar
+                mental health journeys.
               </p>
             </motion.div>
           </div>
@@ -106,12 +105,12 @@ export default function Home() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="p-6 rounded-lg border bg-card"
-          >
+            className="p-6 rounded-lg border bg-card">
             <h3 className="text-2xl font-medium mb-4">AI Integration</h3>
             <p className="text-muted-foreground mb-6">
-              Our upcoming AI features will provide personalized support, mood analysis, and therapy recommendations
-              based on your unique needs and progress.
+              Our upcoming AI features will provide personalized support, mood
+              analysis, and therapy recommendations based on your unique needs
+              and progress.
             </p>
             <div className="flex justify-center">
               <Button variant="outline">Learn More</Button>
@@ -123,7 +122,9 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Start Your Journey?</h2>
+          <h2 className="text-3xl font-bold mb-6">
+            Ready to Start Your Journey?
+          </h2>
           <p className="text-xl text-muted-foreground mb-10">
             Join thousands of others who have found support through MindChain
           </p>
@@ -133,6 +134,5 @@ export default function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
-

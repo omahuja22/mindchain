@@ -5,6 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth-provider";
@@ -51,15 +58,14 @@ export function Navbar() {
 
         <div className="hidden md:flex items-center gap-4">
           <ThemeToggle />
-          {isAuthenticated ? (
-            <Button variant="outline" onClick={logout}>
-              Logout
+          <SignedOut>
+            <Button variant={"outline"} asChild>
+              <SignInButton />
             </Button>
-          ) : (
-            <Button asChild>
-              <Link href="/login">Login</Link>
-            </Button>
-          )}
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
 
         {/* Mobile Navigation Toggle */}
