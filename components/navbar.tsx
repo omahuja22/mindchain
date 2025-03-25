@@ -15,7 +15,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -57,7 +56,6 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <ThemeToggle />
           <SignedOut>
             <Button variant={"outline"} asChild>
               <SignInButton />
@@ -70,7 +68,6 @@ export function Navbar() {
 
         {/* Mobile Navigation Toggle */}
         <div className="md:hidden flex items-center gap-4">
-          <ThemeToggle />
           <Button
             variant="ghost"
             size="icon"

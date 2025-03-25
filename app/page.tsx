@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center px-4 py-36 text-center bg-gradient-to-b from-background to-secondary/20">
+      <section className="flex flex-col items-center justify-center px-4 py-36 text-center bg-gradient-to-tl from-background to-primary/10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function Home() {
       {/* Future Scope Section */}
       <section className="py-20 px-4 bg-secondary/10">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Future Scope</h2>
+          <h2 className="text-3xl font-bold mb-6">Future Scope ✨</h2>
           <p className="text-xl text-muted-foreground mb-10">
             We're constantly evolving to provide better mental health support
           </p>
@@ -106,15 +106,12 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
             className="p-6 rounded-lg border bg-card">
-            <h3 className="text-2xl font-medium mb-4">AI Integration</h3>
+            <h3 className="text-2xl font-medium mb-4">🧠 RAG Integration</h3>
             <p className="text-muted-foreground mb-6">
               Our upcoming AI features will provide personalized support, mood
-              analysis, and therapy recommendations based on your unique needs
-              and progress.
+              analysis, and therapy recommendations based on user data from our
+              doctors.
             </p>
-            <div className="flex justify-center">
-              <Button variant="outline">Learn More</Button>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -128,9 +125,6 @@ export default function Home() {
           <p className="text-xl text-muted-foreground mb-10">
             Join thousands of others who have found support through MindChain
           </p>
-          <Button size="lg" asChild>
-            <Link href="/login">Create Your Account</Link>
-          </Button>
         </div>
       </section>
     </div>
