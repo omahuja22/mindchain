@@ -2,11 +2,16 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, Shield, Users } from "lucide-react";
-
+import { ArrowRight, Brain, Home, Shield, Users } from "lucide-react";
+import { Instrument_Serif } from "next/font/google";
 import { Button } from "@/components/ui/button";
 
-export default function Home() {
+const serif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+export default function Page() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -16,7 +21,11 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+          <h1
+            className={
+              "text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl " +
+              serif.className
+            }>
             Decentralized Mental Health Support
           </h1>
           <p className="mt-6 text-xl text-muted-foreground">

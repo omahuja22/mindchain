@@ -15,6 +15,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth-provider";
+import Image from "next/image";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -36,6 +37,7 @@ export function Navbar() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center">
+            <Image src="/logo.png" alt="logo" width={40} height={40} />
             <span className="text-xl font-bold">MindChain</span>
           </Link>
         </div>
