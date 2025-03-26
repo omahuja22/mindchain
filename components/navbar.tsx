@@ -26,8 +26,9 @@ export function Navbar() {
     { href: "/chat", label: "Therapy Chat" },
     { href: "/documents", label: "Secure Documents" },
     { href: "/community", label: "Community" },
-    { href: "/dashboard", label: "Dashboard" },
     { href: "/check", label: "Quick Mental Check" },
+    { href: "/journal", label: "Journalism" },
+    { href: "/dashboard", label: "Dashboard" },
   ];
 
   return (

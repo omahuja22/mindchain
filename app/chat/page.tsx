@@ -48,8 +48,8 @@ export default function ChatPage() {
     <div className="container max-w-4xl py-8">
       <Card className="border-none shadow-none">
         <CardHeader className="pb-4">
-          <CardTitle>AI Chat with Gemini</CardTitle>
-          <CardDescription>Chat with Google's Gemini AI model</CardDescription>
+          <CardTitle>Onchain AI virtual Chat</CardTitle>
+          <CardDescription>Chat with (ICP) AI Canister</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
           <div className="flex flex-col h-[calc(100vh-20rem)] border rounded-md">

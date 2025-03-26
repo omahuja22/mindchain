@@ -1,11 +1,9 @@
 "use client";
-https://icp.ninja/editor
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, FileText, Shield } from "lucide-react";
-import { AuthClient } from '@dfinity/auth-client';
-import { createActor } from 'declarations/backend';
-import { canisterId } from 'declarations/backend/index.js';
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,176 +24,45 @@ type TherapySession = {
   transactionId: string;
 };
 
-const network = process.env.DFX_NETWORK;
-const identityProvider =
-  network === 'ic'
-    ? 'https://identity.ic0.app' // Mainnet
-    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943'; // Local
-
-export default function Page() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authClient, setAuthClient] = useState();
-  const [actor, setActor] = useState();
-  const [files, setFiles] = useState([]);
-  const [errorMessage, setErrorMessage] = useState();
-  const [fileTransferProgress, setFileTransferProgress] = useState();
-
-  useEffect(() => {
-    updateActor();
-    setErrorMessage();
-  }, []);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadFiles();
-    }
-  }, [isAuthenticated]);
-
-  async function updateActor() {
-    const authClient = await AuthClient.create();
-    const identity = authClient.getIdentity();
-    const actor = createActor(canisterId, {
-      agentOptions: {
-        identity
-      }
-    });
-    const isAuthenticated = await authClient.isAuthenticated();
-
-    setActor(actor);
-    setAuthClient(authClient);
-    setIsAuthenticated(isAuthenticated);
-  }
-
-  async function login() {
-    await authClient.login({
-      identityProvider,
-      onSuccess: updateActor
-    });
-  }
-
-  async function logout() {
-    await authClient.logout();
-    updateActor();
-  }
-
-  async function loadFiles() {
-    try {
-      const fileList = await actor.getFiles();
-      setFiles(fileList);
-    } catch (error) {
-      console.error('Failed to load files:', error);
-      setErrorMessage('Failed to load files. Please try again.');
-    }
-  }
-
-  async function handleFileUpload(event) {
-    const file = event.target.files[0];
-    setErrorMessage();
-
-    if (!file) {
-      setErrorMessage('Please select a file to upload.');
-      return;
-    }
-
-    if (await actor.checkFileExists(file.name)) {
-      setErrorMessage(`File "${file.name}" already exists. Please choose a different file name.`);
-      return;
-    }
-    setFileTransferProgress({
-      mode: 'Uploading',
-      fileName: file.name,
-      progress: 0
-    });
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const content = new Uint8Array(e.target.result);
-      const chunkSize = 1024 * 1024; // 1 MB chunks
-      const totalChunks = Math.ceil(content.length / chunkSize);
-
-      try {
-        for (let i = 0; i < totalChunks; i++) {
-          const start = i * chunkSize;
-          const end = Math.min(start + chunkSize, content.length);
-          const chunk = content.slice(start, end);
-
-          await actor.uploadFileChunk(file.name, chunk, BigInt(i), file.type);
-          setFileTransferProgress((prev) => ({
-            ...prev,
-            progress: Math.floor(((i + 1) / totalChunks) * 100)
-          }));
-        }
-      } catch (error) {
-        console.error('Upload failed:', error);
-        setErrorMessage(`Failed to upload ${file.name}: ${error.message}`);
-      } finally {
-        await loadFiles();
-        setFileTransferProgress(null);
-      }
-    };
-
-    reader.readAsArrayBuffer(file);
-  }
-
-  async function handleFileDownload(name) {
-    setFileTransferProgress({
-      mode: 'Downloading',
-      fileName: name,
-      progress: 0
-    });
-    try {
-      const totalChunks = Number(await actor.getTotalChunks(name));
-      const fileType = await actor.getFileType(name)[0];
-      let chunks = [];
-
-      for (let i = 0; i < totalChunks; i++) {
-        const chunkBlob = await actor.getFileChunk(name, BigInt(i));
-        if (chunkBlob) {
-          chunks.push(chunkBlob[0]);
-        } else {
-          throw new Error(`Failed to retrieve chunk ${i}`);
-        }
-
-        setFileTransferProgress((prev) => ({
-          ...prev,
-          progress: Math.floor(((i + 1) / totalChunks) * 100)
-        }));
-      }
-
-      const data = new Blob(chunks, { type: fileType });
-      const url = URL.createObjectURL(data);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = name;
-      link.click();
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Download failed:', error);
-      setErrorMessage(`Failed to download ${name}: ${error.message}`);
-    } finally {
-      setFileTransferProgress(null);
-    }
-  }
-
-  async function handleFileDelete(name) {
-    if (window.confirm(`Are you sure you want to delete "${name}"?`)) {
-      try {
-        const success = await actor.deleteFile(name);
-        if (success) {
-          await loadFiles();
-        } else {
-          setErrorMessage('Failed to delete file');
-        }
-      } catch (error) {
-        console.error('Delete failed:', error);
-        setErrorMessage(`Failed to delete ${name}: ${error.message}`);
-      }
-    }
-  }
-
-  if (!isAuthenticated) {return (<button onClick={login} className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-    Login with Internet Identity
-  </button>) }
+export default function RecordsPage() {
+  const [sessions] = useState<TherapySession[]>([
+    {
+      id: "1",
+      date: "2023-11-15",
+      therapist: "Dr. Thompson",
+      duration: "45 minutes",
+      notes:
+        "Initial assessment. Discussed anxiety triggers and potential coping mechanisms.",
+      transactionId: "0x7f9a8d7c6b5a4e3d2c1b0a9f8e7d6c5b4a3f2e1d",
+    },
+    {
+      id: "2",
+      date: "2023-11-22",
+      therapist: "Dr. Thompson",
+      duration: "50 minutes",
+      notes:
+        "Follow-up session. Explored childhood experiences and their impact on current anxiety patterns.",
+      transactionId: "0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t",
+    },
+    {
+      id: "3",
+      date: "2023-11-29",
+      therapist: "Dr. Thompson",
+      duration: "60 minutes",
+      notes:
+        "Discussed progress with mindfulness techniques. Introduced cognitive behavioral strategies for managing stress.",
+      transactionId: "0x3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x",
+    },
+    {
+      id: "4",
+      date: "2023-12-06",
+      therapist: "Dr. Thompson",
+      duration: "45 minutes",
+      notes:
+        "Reviewed homework assignments. Client reported improved sleep and reduced anxiety symptoms.",
+      transactionId: "0x9z8y7x6w5v4u3t2s1r0q9p8o7n6m5l4k3j2i1h0g",
+    },
+  ]);
 
   return (
     <div className="container py-8">
@@ -209,46 +76,22 @@ export default function Page() {
               Secure Documents
             </h1>
             <p className="text-muted-foreground mt-1">
-              Your therapy & tounseling records are securely stored on the
-              blockchain
+              Your therapy documents are securely stored on the blockchain
             </p>
           </div>
-          <div>
-          <div className="mb-4">
-            <input
-              type="file"
-              onChange={handleFileUpload}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-            />
-          </div>
-          {errorMessage && (
-            <div className="mt-4 rounded-md border border-red-400 bg-red-100 p-3 text-red-700">{errorMessage}</div>
-          )}
-
-          {fileTransferProgress && (
-            <div className="mb-4">
-              <p className="mb-2 text-sm text-gray-600">
-                {`${fileTransferProgress.mode} ${fileTransferProgress.fileName} ... ${fileTransferProgress.progress}%`}
-              </p>
-            </div>
-          )}
-          </div>
+          <Button>
+            <FileText className="mr-2 h-4 w-4" />
+            Upload File
+          </Button>
         </div>
-          <button onClick={logout} className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-            Logout
-          </button>
-      </div>
 
         <div>
-        {files.length === 0 ? (
-              <p className="py-8 text-center text-gray-500">You have no files. Upload some!</p>
-            ) : (
-              files.map((file) => (
-            <Card key={file.name} className="mb-2">
+          {sessions.map((session) => (
+            <Card key={session.id} className="mb-2">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle>{file.name}</CardTitle>
+                    <CardTitle>{session.therapist}</CardTitle>
                     <CardDescription className="flex items-center mt-1">
                       <Calendar className="mr-1 h-3 w-3" />
                       {new Date(session.date).toLocaleDateString("en-US", {
@@ -265,19 +108,20 @@ export default function Page() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p>this document is stored in blockchain</p>
+                <p>{session.notes}</p>
               </CardContent>
-              <CardFooter className="gap-2">
-                <Button variant={"outline"} size={"sm"} onClick={() => handleFileDownload(file.name)}>
-                  Download
-                </Button>
-                <Button variant={"destructive"} size={"sm"} onClick={() => handleFileDelete(file.name)}>
-                  Delete
-                </Button>
+              <CardFooter className="text-xs text-muted-foreground pt-0">
+                <div className="flex gap-3">
+                  <Button variant={"outline"} size={"sm"}>
+                    Download
+                  </Button>
+                  <Button variant={"destructive"} size={"sm"}>
+                    Delete
+                  </Button>
+                </div>
               </CardFooter>
             </Card>
-                        ))
-                      )}
+          ))}
         </div>
       </motion.div>
     </div>
