@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { UploadButton } from "@/utils/uploadthing";
 
 type TherapySession = {
   id: string;
@@ -79,10 +80,18 @@ export default function RecordsPage() {
               Your therapy documents are securely stored on the blockchain
             </p>
           </div>
-          <Button>
-            <FileText className="mr-2 h-4 w-4" />
-            Upload File
-          </Button>
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              console.log("Files: ", res);
+              alert("Upload Completed");
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
         </div>
 
         <div>
